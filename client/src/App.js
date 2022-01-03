@@ -6,19 +6,35 @@ function App() {
 
   let [list,setList] = React.useState([]);
 
-  let data = axios.get('http://localhost:8000/')
-  data.then(res => {
-    setList(res.data);
-  });
+  React.useEffect(() => {
+    let data = axios.get('http://localhost:8000/')
+    data.then(res => {
+      setList(res.data);
+    })
+  },[]);
+
+  let inName = React.createRef()
+
+  let pushData = () => {
+    let post = axios.post('http://localhost:8000/',{
+      id: null,
+      name: input.current.value,
+      isDone: 0
+    })
+  }
 
   return (
     <div className="site">
       <h1>WHAT YOUR TASKS?</h1>
       <div className="addTask">
-        <input placeholder="Write here ..."/>
-        <button>Add</button>
+        <input ref={inName} placeholder="Write here ..."/>
+        <button onClick={pushData}>Add</button>
       </div>
-      <Task />
+      {
+        list.map(task => {
+          return <Task id={task.id} name={task.name}/>
+        })
+      }
     </div>
   );
 }
