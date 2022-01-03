@@ -21,6 +21,12 @@ function App() {
       name: inName.current.value,
       isDone: 0
     })
+    window.location.reload()
+  }
+
+  let deleteTask = (id) => {
+    let post = axios.post('http://localhost:8000/del',{id: id})
+    window.location.reload()
   }
 
   return (

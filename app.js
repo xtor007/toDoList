@@ -39,6 +39,16 @@ app.post('/',(req,res) => {
   });
 });
 
+app.post('/del',(req,res) => {
+  db.query('DELETE FROM tasks WHERE id=?',req.body.id,(err,result,fields) => {
+    if (err) {
+      res.json(err);
+    } else {
+      res.json(result);
+    }
+  });
+});
+
 app.listen(8000,()=>{
   console.log('norm')
 });
