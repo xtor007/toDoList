@@ -18,7 +18,7 @@ function App() {
   let pushData = () => {
     let post = axios.post('http://localhost:8000/',{
       id: null,
-      name: input.current.value,
+      name: inName.current.value,
       isDone: 0
     })
   }

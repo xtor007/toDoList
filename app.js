@@ -28,6 +28,17 @@ app.get('/',(req,res) => {
   });
 });
 
+app.post('/',(req,res) => {
+  let data = [req.body.id,req.body.name,req.body.isDone];
+  db.query('INSERT INTO tasks (id,name,isDone) VALUES (?,?,?)',data,(err,result,fields) => {
+    if (err) {
+      res.json(err);
+    } else {
+      res.json(result);
+    }
+  });
+});
+
 app.listen(8000,()=>{
   console.log('norm')
 });
