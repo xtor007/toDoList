@@ -2,7 +2,7 @@ import React from 'react';
 
 let Task = (props) => {
   return (
-    <div class="task">
+    <div className="task">
       <p>task</p>
       <div>
         <button>&#128396;</button>
