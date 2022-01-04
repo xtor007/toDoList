@@ -8,15 +8,25 @@ let deleteTask = (id) => {
 
 
 let Task = (props) => {
-  return (
-    <div className="task">
-      <p>{props.name}</p>
-      <div>
-        <button>&#128396;</button>
-        <button onClick={() => {deleteTask(props.id)}}>&#9940;</button>
+  if (props.isDone == 1) {
+    return (
+      <div className="task _done">
+        <p>{props.name}</p>
+        <div>
+          <button onClick={() => {deleteTask(props.id)}}>&#9940;</button>
+        </div>
       </div>
-    </div>
-  )
+    )
+  } else {
+    return (
+      <div className="task">
+        <p>{props.name}</p>
+        <div>
+          <button onClick={() => {deleteTask(props.id)}}>&#9940;</button>
+        </div>
+      </div>
+    )
+  }
 }
 
 export default Task;

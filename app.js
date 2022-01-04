@@ -49,6 +49,17 @@ app.post('/del',(req,res) => {
   });
 });
 
+app.post('/upd',(req,res) => {
+  let data = [req.body.isDone,req.body.id];
+  db.query('UPDATE tasks SET isDone = ? WHERE id = ?',data,(err,result,fields) => {
+    if (err) {
+      res.json(err);
+    } else {
+      res.json(result);
+    }
+  });
+});
+
 app.listen(8000,()=>{
   console.log('norm')
 });

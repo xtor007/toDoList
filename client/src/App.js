@@ -16,12 +16,30 @@ function App() {
   let inName = React.createRef()
 
   let pushData = () => {
-    let post = axios.post('http://localhost:8000/',{
-      id: null,
-      name: inName.current.value,
-      isDone: 0
+    if (inName.current.value != "") {
+      let post = axios.post('http://localhost:8000/',{
+        id: null,
+        name: inName.current.value,
+        isDone: 0
+      })
+      window.location.reload()
+    }
+  }
+
+  let changeDone = (id,isDone) => {
+    let post = axios.post('http://localhost:8000/upd',{
+      id: id,
+      isDone: !isDone
     })
     window.location.reload()
+  }
+
+  let isChecked = (isDone) => {
+    if (isDone) {
+      return "checked"
+    } else {
+      return ""
+    }
   }
 
   return (
@@ -33,7 +51,10 @@ function App() {
       </div>
       {
         list.map(task => {
-          return <Task id={task.id} name={task.name}/>
+          return <div className="check-task">
+            <input type="checkbox" onClick={() => {changeDone(task.id,task.isDone)}} checked={isChecked(task.isDone)}/>
+            <Task id={task.id} name={task.name} isDone={task.isDone}/>
+          </div>
         })
       }
     </div>
