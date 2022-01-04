@@ -24,11 +24,6 @@ function App() {
     window.location.reload()
   }
 
-  let deleteTask = (id) => {
-    let post = axios.post('http://localhost:8000/del',{id: id})
-    window.location.reload()
-  }
-
   return (
     <div className="site">
       <h1>WHAT YOUR TASKS?</h1>
