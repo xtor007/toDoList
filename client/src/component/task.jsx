@@ -1,10 +1,7 @@
 import React from 'react';
-import axios from 'axios';
 import {queryFetch} from '../App.js';
 
 let deleteTask = (id) => {
-  // let post = axios.post('http://localhost:8000/del',{id: id})
-  // window.location.reload()
   queryFetch(
     `mutation MyMutation($delId: uuid!) {
       delete_tasks_by_pk(id: $delId) {

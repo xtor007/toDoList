@@ -1,4 +1,3 @@
-import axios from 'axios'
 import React from 'react'
 import Task from './component/task.jsx'
 
@@ -17,13 +16,8 @@ function queryFetch(inQuery, inVariables) {
 function App() {
 
   let [list,setList] = React.useState([]);
-  //let realList = null
 
   React.useEffect(() => {
-    // let data = axios.get('http://localhost:8000/')
-    // data.then(res => {
-    //   setList(res.data);
-    // })
     queryFetch(
       `query getAll {
         tasks(order_by: {date: asc}) {
@@ -41,11 +35,6 @@ function App() {
 
   let pushData = () => {
     if (inName.current.value != "") {
-      // let post = axios.post('http://localhost:8000/',{
-      //   id: null,
-      //   name: inName.current.value,
-      //   isDone: 0
-      // })
       queryFetch(
         `mutation insertData($inText: String){
           insert_tasks_one(object: {isDone: 0, name: $inText}) {
@@ -54,16 +43,10 @@ function App() {
         }`,
         {inText: inName.current.value}
       )
-      //window.location.reload()
     }
   }
 
   let changeDone = (id,isDone) => {
-    // let post = axios.post('http://localhost:8000/upd',{
-    //   id: id,
-    //   isDone: !isDone
-    // })
-    // window.location.reload()
     let newData = (isDone == 1) ? 0 : 1
     queryFetch(
       `mutation editIsDone($findId: uuid!, $newIsDone: Int) {

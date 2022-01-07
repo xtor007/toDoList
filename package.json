@@ -20,13 +20,6 @@
   },
   "homepage": "https://github.com/xtor007/toDoList#readme",
   "dependencies": {
-    "axios": "^0.24.0",
-    "body-parser": "^1.19.1",
-    "cors": "^2.8.5",
-    "express": "^4.17.2",
-    "express-graphql": "^0.12.0",
-    "graphql": "^15.8.0",
-    "mysql": "^2.18.1"
   },
   "devDependencies": {
     "concurrently": "^7.0.0",
