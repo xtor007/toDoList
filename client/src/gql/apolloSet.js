@@ -6,7 +6,7 @@ import { getMainDefinition } from 'apollo-utilities';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 
 const wsLink = new WebSocketLink({
-    uri: `ws://new-pig-96.hasura.app/v1/graphql`,
+    uri: `wss://new-pig-96.hasura.app/v1/graphql`,
     options: {
         reconnect: true,
         connectionParams: {
