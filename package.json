@@ -2,10 +2,11 @@
   "name": "todolist",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node app.js",
-    "client": "npm run start --prefix client"
+    "start": "server.js",
+    "client": "npm run start --prefix client",
+    "heroku-posbuild": "npm install"
   },
   "repository": {
     "type": "git",
@@ -18,6 +19,7 @@
   },
   "homepage": "https://github.com/xtor007/toDoList#readme",
   "dependencies": {
+    "express": "^4.17.2"
   },
   "devDependencies": {
     "concurrently": "^7.0.0",
