@@ -1,5 +1,7 @@
 import React from 'react'
 import Task from './component/task.jsx'
+import { gql } from '@apollo/client'
+import { useSubscription } from '@apollo/react-hooks'
 
 function queryFetch(inQuery, inVariables) {
   return fetch('https://new-pig-96.hasura.app/v1/graphql',{
@@ -15,7 +17,45 @@ function queryFetch(inQuery, inVariables) {
 
 function App() {
 
+  function isEqual(a,b) {
+    if(a.length != b.length)
+       return false;
+    let i = 0
+    for(i = 0; i < a.length; i++)
+       if(a[i] != b[i])
+          return false;
+    return true;
+  }
+
   let [list,setList] = React.useState([]);
+
+  const {data,error,loading} = useSubscription(gql(`
+    subscription subData {
+      tasks(order_by: {date: asc}) {
+        id
+        isDone
+        name
+      }
+    }
+  `),{})
+
+  if (data) {
+    console.log("data load")
+    let loadData = data?.tasks
+    console.log(loadData)
+    if (!isEqual(loadData,list)) {
+      setList(loadData)
+      console.log(list)
+    }
+  }
+
+  if (error) {
+    console.log(error)
+  }
+
+  if (loading) {
+    console.log("loading data")
+  }
 
   React.useEffect(() => {
     queryFetch(
@@ -44,6 +84,7 @@ function App() {
         {inText: inName.current.value}
       )
     }
+    inName.current.value = ""
   }
 
   let changeDone = (id,isDone) => {
