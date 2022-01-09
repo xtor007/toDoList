@@ -5,21 +5,22 @@ import { split } from 'apollo-link';
 import { getMainDefinition } from 'apollo-utilities';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 
+
 const wsLink = new WebSocketLink({
-    uri: `wss://new-pig-96.hasura.app/v1/graphql`,
+    uri: process.env.REACT_APP_WSS_LINK,
     options: {
         reconnect: true,
         connectionParams: {
             headers: {
-                'content-type': 'application/json',
-                'x-hasura-admin-secret': 'eRltODkyV4VCMHxjGoRnnARLNfG6oWviDAL6lH8EZnCwbmRHnTprwdXD3AQlalhQ'
+                'content-type': process.env.REACT_APP_CONTENT_TYPE,
+                'x-hasura-admin-secret': process.env.REACT_APP_SECRET
             },
         },
     },
 });
 
 const httpLink = new HttpLink({
-    uri: `https://new-pig-96.hasura.app/v1/graphql`,
+    uri: process.env.REACT_APP_HTTP_LINK,
 });
 
 const link = split(

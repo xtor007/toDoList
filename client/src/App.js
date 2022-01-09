@@ -3,11 +3,13 @@ import Task from './component/task.jsx'
 import { gql } from '@apollo/client'
 import { useSubscription } from '@apollo/react-hooks'
 
+//require('dotenv').config()
+
 function queryFetch(inQuery, inVariables) {
-  return fetch('https://new-pig-96.hasura.app/v1/graphql',{
+  return fetch(process.env.REACT_APP_HTTP_LINK,{
     method: 'POST',
-    headers: { "content-type": "aplication/json",
-               "x-hasura-admin-secret": "eRltODkyV4VCMHxjGoRnnARLNfG6oWviDAL6lH8EZnCwbmRHnTprwdXD3AQlalhQ"},
+    headers: { "content-type": process.env.REACT_APP_CONTENT_TYPE,
+               "x-hasura-admin-secret": process.env.REACT_APP_SECRET},
     body: JSON.stringify({
       query: inQuery,
       variables: inVariables
@@ -54,7 +56,6 @@ function App() {
 
   if (error) {
     isServerWork = false
-    setList([])
   }
 
   if (loading) {
