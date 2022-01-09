@@ -15,14 +15,16 @@ function queryFetch(inQuery, inVariables) {
   }).then(res => res.json())
 }
 
+let isConnection = true
+
 function App() {
 
   function isEqual(a,b) {
-    if(a.length != b.length)
+    if(a.length !== b.length)
        return false;
     let i = 0
     for(i = 0; i < a.length; i++)
-       if(a[i] != b[i])
+       if(a[i] !== b[i])
           return false;
     return true;
   }
@@ -57,49 +59,63 @@ function App() {
     console.log("loading data")
   }
 
-  React.useEffect(() => {
-    queryFetch(
-      `query getAll {
-        tasks(order_by: {date: asc}) {
-          id
-          isDone
-          name
-        }
-      }`
-    ).then(data => {
-      setList(data.data.tasks)
-    })
+  React.useEffect(async () => {
+    try {
+      await queryFetch(
+        `query getAll {
+          tasks(order_by: {date: asc}) {
+            id
+            isDone
+            name
+          }
+        }`
+      ).then(data => {
+        setList(data.data.tasks)
+      })
+    } catch(err) {
+      isConnection = false
+    }
   },[]);
 
   let inName = React.createRef()
 
-  let pushData = () => {
-    if (inName.current.value != "") {
-      queryFetch(
-        `mutation insertData($inText: String){
-          insert_tasks_one(object: {isDone: 0, name: $inText}) {
-            id
-          }
-        }`,
-        {inText: inName.current.value}
-      )
+  let pushData = async () => {
+    if (inName.current.value !== "") {
+      try {
+        await queryFetch(
+          `mutation insertData($inText: String){
+            insert_tasks_one(object: {isDone: 0, name: $inText}) {
+              id
+            }
+          }`,
+          {inText: inName.current.value}
+        )
+      } catch(err) {
+        isConnection = false
+      }
     }
     inName.current.value = ""
   }
 
-  let changeDone = (id,isDone) => {
-    let newData = (isDone == 1) ? 0 : 1
-    queryFetch(
-      `mutation editIsDone($findId: uuid!, $newIsDone: Int) {
-        update_tasks_by_pk(pk_columns: {id: $findId}, _set: {isDone: $newIsDone}) {
-          id
+  let changeDone = async (id,isDone) => {
+    let newData = (isDone === 1) ? 0 : 1
+    try {
+      await queryFetch(
+        `mutation editIsDone($findId: uuid!, $newIsDone: Int) {
+          update_tasks_by_pk(pk_columns: {id: $findId}, _set: {isDone: $newIsDone}) {
+            id
+          }
+        }`,
+        {
+          findId: id,
+          newIsDone: newData
         }
-      }`,
-      {
-        findId: id,
-        newIsDone: newData
-      }
-    )
+      )
+    } catch(err) {
+      console.log("sdvvnmbhnvsd")
+      isConnection = false
+      return
+    }
   }
 
   let isChecked = (isDone) => {
@@ -110,9 +126,14 @@ function App() {
     }
   }
 
+  let isConnected = (connVal) => {
+    console.log("check")
+    if (connVal) return "!"
+  }
+
   return (
     <div className="site">
-      <h1>WHAT YOUR TASKS?</h1>
+      <h1>WHAT YOUR TASKS? {isConnected(isConnection)}</h1>
       <div className="addTask">
         <input ref={inName} placeholder="Write here ..."/>
         <button onClick={pushData}>Add</button>
@@ -127,6 +148,7 @@ function App() {
       }
     </div>
   );
+
 }
 
 export default App;

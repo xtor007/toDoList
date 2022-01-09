@@ -1,20 +1,24 @@
 import React from 'react';
 import {queryFetch} from '../App.js';
 
-let deleteTask = (id) => {
-  queryFetch(
-    `mutation MyMutation($delId: uuid!) {
-      delete_tasks_by_pk(id: $delId) {
-        id
-      }
-    }`,
-    {delId: id}
-  )
+let deleteTask = async (id) => {
+  try {
+    await queryFetch(
+      `mutation MyMutation($delId: uuid!) {
+        delete_tasks_by_pk(id: $delId) {
+          id
+        }
+      }`,
+      {delId: id}
+    )
+  } catch(err) {
+    console.log("mhbn")
+  }
 }
 
 
 let Task = (props) => {
-  if (props.isDone == 1) {
+  if (props.isDone === 1) {
     return (
       <div className="task _done">
         <p>{props.name}</p>
