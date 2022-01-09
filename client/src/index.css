@@ -1,5 +1,9 @@
+:root {
+  --main-bg-color: #C79AF1;
+}
+
 * {
-  background-color: #C79AF1;
+  background-color: var(--main-bg-color);
 }
 
 .errorMes {
