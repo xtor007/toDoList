@@ -15,7 +15,9 @@ function queryFetch(inQuery, inVariables) {
   }).then(res => res.json())
 }
 
+
 let isConnection = true
+let isServerWork = true
 
 function App() {
 
@@ -42,17 +44,17 @@ function App() {
   `),{})
 
   if (data) {
+    isServerWork = true
     console.log("data load")
     let loadData = data?.tasks
-    console.log(loadData)
     if (!isEqual(loadData,list)) {
       setList(loadData)
-      console.log(list)
     }
   }
 
   if (error) {
-    console.log(error)
+    isServerWork = false
+    setList([])
   }
 
   if (loading) {
@@ -74,6 +76,7 @@ function App() {
       })
     } catch(err) {
       isConnection = false
+      setList([])
     }
   },[]);
 
@@ -92,6 +95,7 @@ function App() {
         )
       } catch(err) {
         isConnection = false
+        setList([])
       }
     }
     inName.current.value = ""
@@ -112,9 +116,8 @@ function App() {
         }
       )
     } catch(err) {
-      console.log("sdvvnmbhnvsd")
       isConnection = false
-      return
+      setList([])
     }
   }
 
@@ -126,14 +129,13 @@ function App() {
     }
   }
 
-  let isConnected = (connVal) => {
-    console.log("check")
-    if (connVal) return "!"
-  }
+  if(!isConnection) {return (<div className="errorMes">ERROR CONNECTION</div>)}
+
+  if(!isServerWork) {return (<div className="errorMes">SERVER ERROR</div>)}
 
   return (
     <div className="site">
-      <h1>WHAT YOUR TASKS? {isConnected(isConnection)}</h1>
+      <h1>WHAT YOUR TASKS?</h1>
       <div className="addTask">
         <input ref={inName} placeholder="Write here ..."/>
         <button onClick={pushData}>Add</button>
