@@ -2,6 +2,7 @@ import React from 'react'
 import Task from './component/task.jsx'
 import { gql } from '@apollo/client'
 import { useSubscription } from '@apollo/react-hooks'
+import { Spinner } from 'react-bootstrap'
 
 //require('dotenv').config()
 
@@ -20,6 +21,7 @@ function queryFetch(inQuery, inVariables) {
 
 let isConnection = true
 let isServerWork = true
+let isLoading = false
 
 function App() {
 
@@ -47,6 +49,7 @@ function App() {
 
   if (data) {
     isServerWork = true
+    isLoading = false
     console.log("data load")
     let loadData = data?.tasks
     if (!isEqual(loadData,list)) {
@@ -56,10 +59,11 @@ function App() {
 
   if (error) {
     isServerWork = false
+    isLoading = false
   }
 
   if (loading) {
-    console.log("loading data")
+    isLoading = true
   }
 
   React.useEffect(async () => {
@@ -128,6 +132,14 @@ function App() {
     } else {
       return ""
     }
+  }
+
+  if (isLoading) {
+    return (
+      <div className={'main-spinner-div'}>
+          <Spinner animation="grow" className={'main-spinner'} />
+      </div>
+    );
   }
 
   if(!isConnection) {return (<div className="errorMes">ERROR CONNECTION</div>)}
