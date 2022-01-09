@@ -1,0 +1,28 @@
+{
+  "name": "todolist",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "client": "npm run start --prefix client",
+    "heroku-posbuild": "npm install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xtor007/toDoList.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/xtor007/toDoList/issues"
+  },
+  "homepage": "https://github.com/xtor007/toDoList#readme",
+  "dependencies": {
+    "express": "^4.17.2"
+  },
+  "devDependencies": {
+    "concurrently": "^7.0.0",
+    "nodemon": "^2.0.15"
+  }
+}
