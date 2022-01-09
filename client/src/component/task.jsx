@@ -1,17 +1,6 @@
 import React from 'react';
 import {queryFetch} from '../App.js';
 
-
-let isDeleteActive = true
-
-// let rightContent = (isOnline,id) => {
-//   if (isOnline) {
-//     return (<button onClick={() => {deleteTask(id)}}>&#9940;</button>)
-//   } else {
-//     return "offline"
-//   }
-// }
-
 let doneClass = (isDone) => {
   if (isDone === 1) {
     return "task _done"
@@ -22,6 +11,8 @@ let doneClass = (isDone) => {
 
 
 let Task = (props) => {
+
+  let [isDeleteActive,setIsDeleteActive] = React.useState([])
 
   let deleteTask = async (id) => {
     try {
@@ -34,8 +25,7 @@ let Task = (props) => {
         {delId: id}
       )
     } catch(err) {
-      isDeleteActive = false
-      return (<div className="task">YOU AREN'T CONNECT</div>)
+      setIsDeleteActive(false)
     }
   }
 

@@ -4,8 +4,6 @@ import { gql } from '@apollo/client'
 import { useSubscription } from '@apollo/react-hooks'
 import { Spinner } from 'react-bootstrap'
 
-//require('dotenv').config()
-
 function queryFetch(inQuery, inVariables) {
   return fetch(process.env.REACT_APP_HTTP_LINK,{
     method: 'POST',
@@ -18,8 +16,6 @@ function queryFetch(inQuery, inVariables) {
   }).then(res => res.json())
 }
 
-
-let isConnection = true
 let isServerWork = true
 let isLoading = false
 
@@ -36,6 +32,7 @@ function App() {
   }
 
   let [list,setList] = React.useState([]);
+  let [isConnection,setIsConnection] = React.useState([]);
 
   const {data,error,loading} = useSubscription(gql(`
     subscription subData {
@@ -66,23 +63,25 @@ function App() {
     isLoading = true
   }
 
-  React.useEffect(async () => {
-    try {
-      await queryFetch(
-        `query getAll {
-          tasks(order_by: {date: asc}) {
-            id
-            isDone
-            name
-          }
-        }`
-      ).then(data => {
-        setList(data.data.tasks)
-      })
-    } catch(err) {
-      isConnection = false
-      setList([])
+  React.useEffect(() => {
+    async function fetchData() {
+      try {
+        await queryFetch(
+          `query getAll {
+            tasks(order_by: {date: asc}) {
+              id
+              isDone
+              name
+            }
+          }`
+        ).then(data => {
+          setList(data.data.tasks)
+        })
+      } catch(err) {
+        setIsConnection(false)
+      }
     }
+    fetchData()
   },[]);
 
   let inName = React.createRef()
@@ -99,8 +98,7 @@ function App() {
           {inText: inName.current.value}
         )
       } catch(err) {
-        isConnection = false
-        setList([])
+        setIsConnection(false)
       }
     }
     inName.current.value = ""
@@ -121,8 +119,7 @@ function App() {
         }
       )
     } catch(err) {
-      isConnection = false
-      setList([])
+      setIsConnection(false)
     }
   }
 
